@@ -19,7 +19,6 @@
         "clue/mq-react": "^1.0",
         "swiftmailer/swiftmailer": "^6.0",
         "recoil/react": "^1.0",
-        "clue/socks-react": "^0.8.7",
-        "jolicode/jolinotif": "^2.0"
+        "clue/socks-react": "^0.8.7"
     }
 }

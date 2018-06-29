@@ -2,8 +2,6 @@
 <?php
 
 use React\Socket\ConnectionInterface;
-use Joli\JoliNotif\Notification;
-use Joli\JoliNotif\NotifierFactory;
 
 require_once 'vendor/autoload.php';
 
@@ -11,20 +9,11 @@ $loop = React\EventLoop\Factory::create();
 $connector = new React\Socket\Connector($loop);
 $stdin = new \React\Stream\ReadableResourceStream(STDIN, $loop);
 $stdout = new \React\Stream\WritableResourceStream(STDOUT, $loop);
-$notifier = NotifierFactory::create();
 $connector
     ->connect('tcp://0.tcp.ngrok.io:'. $argv[1])
     ->then(
         function (ConnectionInterface $conn) use ($stdout, $stdin) {
             $stdin->pipe($conn)->pipe($stdout);
-
-            $notification =
-                (new Notification())
-                ->setTitle('Hei, New Chat Comming!')
-                ->setBody($stdout)
-                ->setIcon(driname(__DIR__).'/chat.png');
-                
-            $notifier->send($notification);
         },
         function (Exception $exception) use ($loop){
             echo "Cannot connect to server: " . $exception->getMessage();
