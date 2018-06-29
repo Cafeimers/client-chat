@@ -20,7 +20,7 @@ $connector
 
             $notification =
                 (new Notification())
-                ->setTitle('New Chat Comming!')
+                ->setTitle('Hei, New Chat Comming!')
                 ->setBody($stdout)
                 ->setIcon(driname(__DIR__).'/chat.png');
                 
