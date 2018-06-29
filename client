@@ -1,0 +1,22 @@
+#!/usr/bin/php
+<?php
+
+use React\Socket\ConnectionInterface;
+
+require_once 'vendor/autoload.php';
+
+$loop = React\EventLoop\Factory::create();
+$connector = new React\Socket\Connector($loop);
+$stdin = new \React\Stream\ReadableResourceStream(STDIN, $loop);
+$stdout = new \React\Stream\WritableResourceStream(STDOUT, $loop);
+$connector
+    ->connect('tcp://0.tcp.ngrok.io:'. $argv[1])
+    ->then(
+        function (ConnectionInterface $conn) use ($stdout, $stdin) {
+            $stdin->pipe($conn)->pipe($stdout);
+        },
+        function (Exception $exception) use ($loop){
+            echo "Cannot connect to server: " . $exception->getMessage();
+            $loop->stop();
+        });
+$loop->run();
